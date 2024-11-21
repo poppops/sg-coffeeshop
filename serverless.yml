@@ -35,6 +35,24 @@ functions:
       - httpApi:
           path: /menu/item
           method: post
+  getMenuItem:
+    handler: coffeeshop.getMenuItem
+    events:
+      - httpApi:
+          path: /menu/item/{menu_id}
+          method: get
+  updateMenuItem:
+    handler: coffeeshop.createMenuItem
+    events:
+      - httpApi:
+          path: /menu/item
+          method: put
+  deleteMenuItem:
+    handler: coffeeshop.deleteMenuItem
+    events:
+      - httpApi:
+          path: /menu/item/{menu_id}
+          method: delete
 
 resources:
   Resources:
