@@ -23,7 +23,7 @@ provider:
           Resource: arn:aws:dynamodb:${aws:region}:${aws:accountId}:table/${self:service}-menu-${sls:stage}
 
 functions:
-  getMenuItems:
+  getAllMenuItems:
     handler: coffeeshop.getAllItems
     events:
       - httpApi:
