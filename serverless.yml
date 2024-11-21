@@ -1,0 +1,58 @@
+# "org" ensures this Service is used with the correct Serverless Framework Access Key.
+org: ayudigital
+# "app" enables Serverless Framework Dashboard features and sharing them with other Services.
+app: coffee-shop
+# "service" is the name of this project. This will also be added to your AWS resource names.
+service: sg-api
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  environment:
+    DYNAMODB_MENU_TABLE: ${self:service}-menu-${sls:stage}
+  iam:
+    role:
+      statements:
+        - Effect: 'Allow'
+          Action:
+            - 'dynamodb:PutItem'
+            - 'dynamodb:Get*'
+            - 'dynamodb:Scan*'
+            - 'dynamodb:UpdateItem'
+            - 'dynamodb:DeleteItem'
+          Resource: arn:aws:dynamodb:${aws:region}:${aws:accountId}:table/${self:service}-menu-${sls:stage}
+
+functions:
+  getMenuItems:
+    handler: coffeeshop.getAllItems
+    events:
+      - httpApi:
+          path: /
+          method: get
+  createMenuItem:
+    handler: coffeeshop.createMenuItem
+    events:
+      - httpApi:
+          path: /menu/item
+          method: post
+
+resources:
+  Resources:
+    MenuTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: menu_id
+            AttributeType: S
+        BillingMode: PAY_PER_REQUEST
+        KeySchema:
+          - AttributeName: menu_id
+            KeyType: HASH
+        TableName: ${self:service}-menu-${sls:stage}
+
+stages:
+  default:
+    resolvers:
+      aws-account:
+        type: aws
+        profile: ayu-dev-1
