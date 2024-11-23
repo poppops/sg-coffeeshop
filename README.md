@@ -10,13 +10,21 @@ authorName: 'Serverless, Inc.'
 authorAvatar: 'https://avatars1.githubusercontent.com/u/13742415?s=200&v=4'
 -->
 
-# Serverless Framework Node HTTP API on AWS
+# SG Coffee Shop using Serverless Framework Node HTTP API on AWS
 
-This template demonstrates how to make a simple HTTP API with Node.js running on AWS Lambda and API Gateway using the Serverless Framework.
+This is a simple restful API created for a coffee shop using the Serverless Framework.
 
-This template does not include any kind of persistence (database). For more advanced examples, check out the [serverless/examples repository](https://github.com/serverless/examples/) which includes Typescript, Mongo, DynamoDB and other examples.
+The API currently supports requests to;
+
+- Get all menu items
+- Create a menu item
+- Retrieve a menu item
+- Update a menu item
+- Delete a menu item
 
 ## Usage
+
+This application requires at least Node 20.x
 
 ### Deployment
 
@@ -51,7 +59,26 @@ curl https://xxxxxxx.execute-api.us-east-1.amazonaws.com/
 Which should result in response similar to:
 
 ```json
-{ "message": "Go Serverless v4! Your function executed successfully!" }
+[
+   {
+      "menu_id":"3",
+      "name":"Latte",
+      "description":"Espresso mixed with steamed milk, typically topped with a small amount of foam. A smooth, creamy coffee...",
+      "price":"3"
+   },
+   {
+      "menu_id":"2",
+      "name":"Americano",
+      "description":"A coffee drink made by diluting a shot of espresso with hot water, giving it a similar strength to drip coffee.",
+      "price":"3"
+   },
+   {
+      "menu_id":"1",
+      "name":"Espresso",
+      "description":"A strong, concentrated coffee made by forcing hot water through finely-ground coffee beans.",
+      "price":"2.5"
+   }
+]
 ```
 
 ### Local development
