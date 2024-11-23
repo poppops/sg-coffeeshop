@@ -80,7 +80,7 @@ module.exports.getMenuItem = async (event) => {
     try {
         const { Item } = await client.send(new GetItemCommand(getItemQuery(requestParams.menu_id)))
         if (!Item) {
-            return getErrorResponse("Item not found", 400)
+            return getErrorResponse("Item not found", 404)
         } else {
             return getSuccessResponse({
                 menu_id: Item.menu_id.N,
