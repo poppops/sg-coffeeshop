@@ -9,7 +9,7 @@ provider:
   name: aws
   runtime: nodejs20.x
   environment:
-    DYNAMODB_MENU_TABLE: ${self:service}-menu-${sls:stage}
+    DYNAMODB_MENU_TABLE: ${self:service}-menu_items-${sls:stage}
   iam:
     role:
       statements:
@@ -20,7 +20,7 @@ provider:
             - 'dynamodb:Scan*'
             - 'dynamodb:UpdateItem'
             - 'dynamodb:DeleteItem'
-          Resource: arn:aws:dynamodb:${aws:region}:${aws:accountId}:table/${self:service}-menu-${sls:stage}
+          Resource: arn:aws:dynamodb:${aws:region}:${aws:accountId}:table/${self:service}-menu_items-${sls:stage}
 
 functions:
   getAllMenuItems:
@@ -42,10 +42,10 @@ functions:
           path: /menu/item/{menu_id}
           method: get
   updateMenuItem:
-    handler: coffeeshop.createMenuItem
+    handler: coffeeshop.updateMenuItem
     events:
       - httpApi:
-          path: /menu/item
+          path: /menu/item/{menu_id}
           method: put
   deleteMenuItem:
     handler: coffeeshop.deleteMenuItem
@@ -61,12 +61,12 @@ resources:
       Properties:
         AttributeDefinitions:
           - AttributeName: menu_id
-            AttributeType: S
+            AttributeType: N
         BillingMode: PAY_PER_REQUEST
         KeySchema:
           - AttributeName: menu_id
             KeyType: HASH
-        TableName: ${self:service}-menu-${sls:stage}
+        TableName: ${self:service}-menu_items-${sls:stage}
 
 stages:
   default:
